@@ -1,0 +1,33 @@
+# Python caches and local environments
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.pytest-*/
+.ruff_cache/
+.mypy_cache/
+.venv/
+venv/
+
+# Local model weights, caches, outputs, and development diagnostics
+/models/
+/artifacts/
+/output/
+/release_staging/
+*.safetensors
+*.ckpt
+*.pth
+*.pt
+*.log
+*.zip
+
+# Local configuration and tool state
+.env
+.env.*
+!.env.example
+.codex/
+.claude/
+.agents/
+.idea/
+.vscode/
+Thumbs.db
+desktop.ini

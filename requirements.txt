@@ -1,0 +1,6 @@
+# ComfyUI 0.39.0 already provides torch, transformers, safetensors, numpy and Pillow.
+# The native Iris CLIP integration uses ComfyUI's Qwen3-VL implementation; do not
+# upgrade Transformers independently. Model weights must be downloaded manually;
+# the extension does not use Hugging Face Hub or auto-download checkpoints.
+# PyTorch/CUDA/Triton/SageAttention are intentionally not managed here.
+omegaconf>=2.3.0

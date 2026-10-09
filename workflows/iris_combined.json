@@ -1,0 +1,967 @@
+{
+  "last_node_id": 18,
+  "last_link_id": 20,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "Iris3BModelLoader",
+      "pos": [
+        0,
+        0
+      ],
+      "size": [
+        340,
+        300
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "links": [
+            3,
+            4
+          ]
+        },
+        {
+          "name": "empty_prompt",
+          "type": "IRIS_EMPTY_PROMPT",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Iris3BModelLoader"
+      },
+      "widgets_values": [
+        "iris-3b/model.safetensors",
+        "None",
+        "sdpa",
+        "bf16_autocast",
+        "t2i",
+        "cpu_after_run"
+      ],
+      "title": "Iris3B Model Loader"
+    },
+    {
+      "id": 2,
+      "type": "CLIPLoader",
+      "pos": [
+        0,
+        360
+      ],
+      "size": [
+        280,
+        120
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            1,
+            2
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPLoader"
+      },
+      "widgets_values": [
+        "qwen3vl_4b_bf16.safetensors",
+        "stable_diffusion",
+        "default"
+      ],
+      "title": "Load Qwen3-VL 4B (standard Load CLIP)"
+    },
+    {
+      "id": 3,
+      "type": "Iris3BCLIPTextEncode",
+      "pos": [
+        350,
+        310
+      ],
+      "size": [
+        280,
+        120
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 1
+        },
+        {
+          "name": "prompt",
+          "type": "STRING",
+          "link": null,
+          "widget": {
+            "name": "prompt"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "conditioning",
+          "type": "CONDITIONING",
+          "links": [
+            5
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Iris3BCLIPTextEncode"
+      },
+      "widgets_values": [
+        "A natural-light photograph of a small handmade robot sitting on a walnut workbench beside a half-repaired mechanical clock. The robot has brushed copper panels, two round glass eyes, and articulated fingers holding a tiny brass gear. An open notebook with pencil sketches lies in the foreground; shelves of neatly arranged tools fade into the background. Late-afternoon sunlight enters from the left, casting long soft shadows. Warm copper and wood tones contrast with cool blue reflections in the glass. Eye-level composition, realistic material textures, subtle depth of field, no lettering or watermark."
+      ],
+      "title": "Iris3B Positive Prompt (Comfy CLIP)"
+    },
+    {
+      "id": 4,
+      "type": "Iris3BCLIPTextEncode",
+      "pos": [
+        350,
+        560
+      ],
+      "size": [
+        280,
+        120
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 2
+        },
+        {
+          "name": "prompt",
+          "type": "STRING",
+          "link": null,
+          "widget": {
+            "name": "prompt"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "conditioning",
+          "type": "CONDITIONING",
+          "links": [
+            6
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Iris3BCLIPTextEncode"
+      },
+      "widgets_values": [
+        ""
+      ],
+      "title": "Iris3B Negative Text Prompt (text only)"
+    },
+    {
+      "id": 5,
+      "type": "Iris3BEmptyPixelLatent",
+      "pos": [
+        350,
+        780
+      ],
+      "size": [
+        280,
+        120
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "latent",
+          "type": "LATENT",
+          "links": [
+            12
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Iris3BEmptyPixelLatent"
+      },
+      "widgets_values": [
+        1024,
+        1024,
+        1
+      ],
+      "title": "Iris3B Empty Pixel Latent"
+    },
+    {
+      "id": 6,
+      "type": "Iris3BSigmaScheduler",
+      "pos": [
+        700,
+        0
+      ],
+      "size": [
+        280,
+        120
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 3
+        }
+      ],
+      "outputs": [
+        {
+          "name": "sigmas",
+          "type": "SIGMAS",
+          "links": [
+            7,
+            8
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Iris3BSigmaScheduler"
+      },
+      "widgets_values": [
+        100,
+        "checkpoint",
+        4.0
+      ],
+      "title": "Iris3B Reference Sigmas"
+    },
+    {
+      "id": 7,
+      "type": "SamplerDPMPP_2M_SDE",
+      "pos": [
+        700,
+        180
+      ],
+      "size": [
+        280,
+        120
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "sampler",
+          "type": "SAMPLER",
+          "links": [
+            9
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SamplerDPMPP_2M_SDE"
+      },
+      "widgets_values": [
+        "midpoint",
+        0.0,
+        1.0,
+        "cpu"
+      ],
+      "title": "DPM++ 2M SDE (reference candidate)"
+    },
+    {
+      "id": 8,
+      "type": "CFGGuider",
+      "pos": [
+        1050,
+        90
+      ],
+      "size": [
+        280,
+        120
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 4
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 5
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 6
+        },
+        {
+          "name": "cfg",
+          "type": "FLOAT",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "guider",
+          "type": "GUIDER",
+          "links": [
+            10
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CFGGuider"
+      },
+      "widgets_values": [
+        3.0
+      ],
+      "title": "CFG Guider"
+    },
+    {
+      "id": 9,
+      "type": "Iris3BReferenceNoise",
+      "pos": [
+        1050,
+        360
+      ],
+      "size": [
+        280,
+        120
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "sigmas",
+          "type": "SIGMAS",
+          "link": 7
+        },
+        {
+          "name": "seed",
+          "type": "INT",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "noise",
+          "type": "NOISE",
+          "links": [
+            11
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Iris3BReferenceNoise"
+      },
+      "widgets_values": [
+        0
+      ],
+      "title": "Iris3B Seeded Sampler Noise"
+    },
+    {
+      "id": 10,
+      "type": "SamplerCustomAdvanced",
+      "pos": [
+        1400,
+        180
+      ],
+      "size": [
+        280,
+        120
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "noise",
+          "type": "NOISE",
+          "link": 11
+        },
+        {
+          "name": "guider",
+          "type": "GUIDER",
+          "link": 10
+        },
+        {
+          "name": "sampler",
+          "type": "SAMPLER",
+          "link": 9
+        },
+        {
+          "name": "sigmas",
+          "type": "SIGMAS",
+          "link": 8
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 12
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "LATENT",
+          "links": [
+            13
+          ]
+        },
+        {
+          "name": "denoised_output",
+          "type": "LATENT",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SamplerCustomAdvanced"
+      },
+      "widgets_values": [],
+      "title": "SamplerCustomAdvanced"
+    },
+    {
+      "id": 11,
+      "type": "Iris3BPixelDecode",
+      "pos": [
+        1680,
+        180
+      ],
+      "size": [
+        280,
+        120
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "latent",
+          "type": "LATENT",
+          "link": 13
+        }
+      ],
+      "outputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "links": [
+            14,
+            16,
+            18
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Iris3BPixelDecode"
+      },
+      "widgets_values": [],
+      "title": "Iris3B Pixel Decode"
+    },
+    {
+      "id": 12,
+      "type": "SaveImage",
+      "pos": [
+        1980,
+        180
+      ],
+      "size": [
+        280,
+        120
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 14
+        },
+        {
+          "name": "filename_prefix",
+          "type": "STRING",
+          "link": null
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "SaveImage"
+      },
+      "widgets_values": [
+        "iris3b/reference"
+      ],
+      "title": "Save Iris Image"
+    },
+    {
+      "id": 13,
+      "type": "Iris3BModelLoader",
+      "pos": [
+        1980,
+        470
+      ],
+      "size": [
+        340,
+        300
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "links": [
+            2,
+            15
+          ]
+        },
+        {
+          "name": "empty_prompt",
+          "type": "IRIS_EMPTY_PROMPT",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Iris3BModelLoader"
+      },
+      "widgets_values": [
+        "iris-3b/depth/model.safetensors",
+        "None",
+        "sdpa",
+        "bf16_autocast",
+        "depth",
+        "cpu_after_run"
+      ],
+      "title": "Iris Depth Model Loader"
+    },
+    {
+      "id": 14,
+      "type": "Iris3BDepth",
+      "pos": [
+        2320,
+        470
+      ],
+      "size": [
+        340,
+        220
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 16
+        },
+        {
+          "name": "depth_model",
+          "type": "MODEL",
+          "link": 15
+        },
+        {
+          "name": "max_side",
+          "type": "INT",
+          "link": null
+        },
+        {
+          "name": "invert",
+          "type": "BOOLEAN",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "depth_preview",
+          "type": "IMAGE",
+          "links": [
+            3,
+            17,
+            18
+          ]
+        },
+        {
+          "name": "relative_log_depth",
+          "type": "IRIS_DEPTH",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Iris3BDepth"
+      },
+      "widgets_values": [
+        1024,
+        false,
+        2.0,
+        98.0,
+        "inferno"
+      ],
+      "title": "Iris3B Depth — Preview + Raw Relative Depth"
+    },
+    {
+      "id": 15,
+      "type": "SaveImage",
+      "pos": [
+        2680,
+        470
+      ],
+      "size": [
+        280,
+        120
+      ],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 17
+        },
+        {
+          "name": "filename_prefix",
+          "type": "STRING",
+          "link": null
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "SaveImage"
+      },
+      "widgets_values": [
+        "iris3b/combined/depth_preview"
+      ],
+      "title": "Save Relative Depth"
+    },
+    {
+      "id": 16,
+      "type": "Iris3BModelLoader",
+      "pos": [
+        1980,
+        780
+      ],
+      "size": [
+        340,
+        300
+      ],
+      "flags": {},
+      "order": 15,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "links": [
+            2,
+            19
+          ]
+        },
+        {
+          "name": "empty_prompt",
+          "type": "IRIS_EMPTY_PROMPT",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Iris3BModelLoader"
+      },
+      "widgets_values": [
+        "iris-3b/upscaler/model.safetensors",
+        "None",
+        "sdpa",
+        "bf16_autocast",
+        "upscaler",
+        "cpu_after_run"
+      ],
+      "title": "Iris Restoration Model Loader"
+    },
+    {
+      "id": 17,
+      "type": "Iris3BRestore4x",
+      "pos": [
+        2320,
+        780
+      ],
+      "size": [
+        340,
+        220
+      ],
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 18
+        },
+        {
+          "name": "restorer",
+          "type": "MODEL",
+          "link": 19
+        },
+        {
+          "name": "budget",
+          "type": "COMBO",
+          "link": null
+        },
+        {
+          "name": "color_fix",
+          "type": "BOOLEAN",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "restored",
+          "type": "IMAGE",
+          "links": [
+            3,
+            20
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Iris3BRestore4x"
+      },
+      "widgets_values": [
+        "fit_budget",
+        true,
+        4.0
+      ],
+      "title": "Iris3B Restore 4x — Original T2I Image"
+    },
+    {
+      "id": 18,
+      "type": "SaveImage",
+      "pos": [
+        2680,
+        780
+      ],
+      "size": [
+        280,
+        120
+      ],
+      "flags": {},
+      "order": 17,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 20
+        },
+        {
+          "name": "filename_prefix",
+          "type": "STRING",
+          "link": null
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "SaveImage"
+      },
+      "widgets_values": [
+        "iris3b/combined/restored"
+      ],
+      "title": "Save Restored Image"
+    }
+  ],
+  "links": [
+    [
+      1,
+      2,
+      0,
+      3,
+      0,
+      "CLIP"
+    ],
+    [
+      2,
+      2,
+      0,
+      4,
+      0,
+      "CLIP"
+    ],
+    [
+      3,
+      1,
+      0,
+      6,
+      0,
+      "MODEL"
+    ],
+    [
+      4,
+      1,
+      0,
+      8,
+      0,
+      "MODEL"
+    ],
+    [
+      5,
+      3,
+      0,
+      8,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      6,
+      4,
+      0,
+      8,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      7,
+      6,
+      0,
+      9,
+      0,
+      "SIGMAS"
+    ],
+    [
+      8,
+      6,
+      0,
+      10,
+      3,
+      "SIGMAS"
+    ],
+    [
+      9,
+      7,
+      0,
+      10,
+      2,
+      "SAMPLER"
+    ],
+    [
+      10,
+      8,
+      0,
+      10,
+      1,
+      "GUIDER"
+    ],
+    [
+      11,
+      9,
+      0,
+      10,
+      0,
+      "NOISE"
+    ],
+    [
+      12,
+      5,
+      0,
+      10,
+      4,
+      "LATENT"
+    ],
+    [
+      13,
+      10,
+      0,
+      11,
+      0,
+      "LATENT"
+    ],
+    [
+      14,
+      11,
+      0,
+      12,
+      0,
+      "IMAGE"
+    ],
+    [
+      15,
+      13,
+      0,
+      14,
+      1,
+      "MODEL"
+    ],
+    [
+      16,
+      11,
+      0,
+      14,
+      0,
+      "IMAGE"
+    ],
+    [
+      17,
+      14,
+      0,
+      15,
+      0,
+      "IMAGE"
+    ],
+    [
+      18,
+      11,
+      0,
+      17,
+      0,
+      "IMAGE"
+    ],
+    [
+      19,
+      16,
+      0,
+      17,
+      1,
+      "MODEL"
+    ],
+    [
+      20,
+      17,
+      0,
+      18,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.8,
+      "offset": [
+        0,
+        0
+      ]
+    },
+    "description": "T2I creates one original pixel-space IMAGE and branches that same image independently to relative-depth preview and 4x restoration. The negative prompt input is text only; Iris has no official visual reference-image conditioning."
+  },
+  "version": 0.4
+}
