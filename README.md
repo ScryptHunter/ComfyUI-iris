@@ -41,7 +41,7 @@ Download weights manually from the official sources and put them in ComfyUI's mo
 | `depth/model.safetensors` from the [Depth export](https://huggingface.co/speridlabs/iris-3b/tree/main/depth) | Depth | `models/diffusion_models/iris-3b/depth/` |
 | `upscaler/model.safetensors` from the [Upscaler export](https://huggingface.co/speridlabs/iris-3b/tree/main/upscaler) | Restoration | `models/diffusion_models/iris-3b/upscaler/` |
 | Optional `empty_prompt.safetensors` from the matching task folder | Depth / restoration | Beside its task model, or select it in the loader |
-| ComfyUI-compatible Qwen3-VL 4B checkpoint from [Qwen](https://huggingface.co/Qwen/Qwen3-VL-4B-Instruct) | Text conditioning | `models/text_encoders/`; load with **Load CLIP** |
+| ComfyUI-compatible Qwen3-VL 4B checkpoint from [Comfy-Org](https://huggingface.co/Comfy-Org/Qwen3-VL) | Text conditioning | `models/text_encoders/`; load with **Load CLIP** |
 
 Place Iris files under `models/diffusion_models/iris-3b/` (recommended) or the legacy `models/unet/iris-3b/`; the loader scans both. Select the local checkpoint in **Iris3B Model Loader** and choose its task (`t2i`, `depth`, or `upscaler`). Restart ComfyUI or refresh the UI if a newly copied file is not listed. Iris config defaults are bundled, so standard exports do not require separate `config.yaml` files. For depth and restoration, `empty_prompt=None` uses the sibling cache when available.
 
